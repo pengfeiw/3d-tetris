@@ -1,5 +1,6 @@
 import React, {useRef} from "react";
 import {useEffect} from "react";
+import {drawGridLine} from "./util/painter";
 import "./index.less";
 
 const MainScreen = ():JSX.Element => {
@@ -14,7 +15,12 @@ const MainScreen = ():JSX.Element => {
                 if (canvas.width != displayWidth || canvas.height != displayHeight) {
                     canvas.width = displayWidth;
                     canvas.height = displayHeight;
+
+                    console.log("width", canvas.width);
+                    console.log("height", canvas.height);
                 }
+                const gl = canvas.getContext("webgl") as WebGLRenderingContext;
+                drawGridLine(gl);
             };
             resizeCanvas();
             window.addEventListener("resize", resizeCanvas);

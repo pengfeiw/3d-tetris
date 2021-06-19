@@ -1,10 +1,21 @@
-import React, {useRef} from "react";
+import React, {useRef, useState} from "react";
 import {useEffect} from "react";
-import {drawGridLine} from "./util/painter";
+import {drawGridLine, drawCube} from "./util/painter";
+import {columnCount as WIDTH, rowCount as HEIGHT} from "../../data/shaderData";
+import ShapeCreator from "./util/shapeCreator";
 import "./index.less";
 
-const MainScreen = ():JSX.Element => {
+const MainScreen = (): JSX.Element => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    // const [cellDatas, setCellDatas] = useState<(0 | 1)[]>(Array(WIDTH * HEIGHT).fill(0));
+    const [cellDatas, setCellDatas] = useState<(0 | 1)[]>(Array(WIDTH * HEIGHT).fill(0).map((value, index) => index % 2 === 0 ? 1 : 0));
+
+    // // 任意数据
+    // useEffect(() => {
+    //     const data = Array(WIDTH * HEIGHT).fill(Math.round(Math.random()) as 0 | 1);
+    //     setCellDatas(data);
+    // }, []);
+
     useEffect(() => {
         const canvas = canvasRef.current;
         if (canvas) {
@@ -21,6 +32,7 @@ const MainScreen = ():JSX.Element => {
                 }
                 const gl = canvas.getContext("webgl") as WebGLRenderingContext;
                 drawGridLine(gl);
+                drawCube(gl, cellDatas);
             };
             resizeCanvas();
             window.addEventListener("resize", resizeCanvas);
@@ -28,7 +40,7 @@ const MainScreen = ():JSX.Element => {
                 window.removeEventListener("resize", resizeCanvas);
             };
         }
-    }, [canvasRef]);
+    }, [canvasRef, cellDatas]);
 
     return (
         <>

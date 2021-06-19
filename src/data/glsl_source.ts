@@ -1,4 +1,4 @@
-export const vertex_source_cube = `
+export const cube_vertex_source = `
     attribute vec4 a_position;
     attribute vec3 a_color;
 

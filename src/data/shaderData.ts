@@ -1,12 +1,15 @@
 // 格子尺寸：10 X 20
 // 立方体边长为10
 
+export const columnCount = 10; // 列数
+export const rowCount = 20; // 行数
+
 /**
  * 获得格子顶点数据
  * @returns 
  */
 const getGridVertexs = (): number[] => {
-    const top = 10, bottom = -10, left = -5, right = 5;
+    const top = rowCount / 2, bottom = -rowCount / 2, left = -columnCount / 2, right = columnCount / 2;
     const data: number[] = [];
 
     // columns
@@ -31,7 +34,7 @@ export const gridVertexs = getGridVertexs();
 /**
  * 立方体顶点数据，表示shape的一个block
  */
-export const cellVertexs = [
+export const cubeVertexs = [
     // near
     -5, -5, 10,
     5, -5, 10,
@@ -75,3 +78,14 @@ export const cellVertexs = [
     -5, 5, 0,
     -5, 5, 10
 ];
+
+export const randomCubeColor = () => {
+    const r = Math.random();
+    const g = Math.random();
+    const b = Math.random();
+    const color = [];
+    for (let i = 0; i < cubeVertexs.length / 3; i++) {
+        color.push(r, g, b);
+    }
+    return color;
+};

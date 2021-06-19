@@ -5,4 +5,25 @@
     top: calc(50% - 75px);
     left: calc(50% - 125px);
     z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px 0;
+    .title {
+        font-size: 20px;
+    }
+    .icon {
+        height: 50px;
+        line-height: 50px;
+        cursor: pointer;
+        .MuiSvgIcon-root {
+            font-size: 45px;
+        }
+    }
+}
+
+.none.gameStatus {
+    display: none;
 }

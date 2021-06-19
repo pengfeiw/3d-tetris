@@ -1,17 +1,20 @@
-import React from "react";
-import MainScreen from "./components/MainScreen";
+import React, {useState} from "react";
+import MainScreen from "./components/mainScreen";
 import About from "./components/about";
 import RealtimeInfo from "./components/realtimeInfo";
-import GameStatus from "./components/gameStatus";
+import GameStatusPanel from "./components/gameStatus";
+import {GameStatus} from "./tetris.interface";
 import "./app.less";
 
-const Tetris = () => {
+const Tetris = ():JSX.Element => {
+    const [status, setStatus] = useState<GameStatus>(GameStatus.UNSTART);
+
     return (
         <div className="tetris">
             <MainScreen/>
             <About />
             <RealtimeInfo />
-            <GameStatus />
+            <GameStatusPanel status={status} setStatus={setStatus} />
         </div>
     );
 };

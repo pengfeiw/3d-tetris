@@ -2,7 +2,7 @@ import React, {useRef} from "react";
 import {useEffect} from "react";
 import "./index.less";
 
-const MainScreen = () => {
+const MainScreen = ():JSX.Element => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     useEffect(() => {
         const canvas = canvasRef.current;

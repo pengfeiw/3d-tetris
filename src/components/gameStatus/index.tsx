@@ -46,7 +46,7 @@ const GameStatus: FC<GameStatusProps> = (props) => {
                     status === Status.OVER ? <RestartIcon /> : <PlayCircleFilledWhiteIcon />
                 }
             </div>
-        </Paper >
+        </Paper>
     );
 };
 

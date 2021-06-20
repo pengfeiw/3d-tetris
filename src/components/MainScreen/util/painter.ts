@@ -3,7 +3,7 @@ import {gridVertexs, cubeVertexs, randomCubeColor} from "../../../data/shaderDat
 import {grid_vertex_source, cube_vertex_source, fragment_source} from "../../../data/glsl_source";
 import Shader from "../../../gl/shader";
 
-const view = mat4.lookAt(mat4.create(), [0, -100, 300], [0, 0, 0], [0, 1, 0]);
+const view = mat4.lookAt(mat4.create(), [0, -200, 200], [0, 0, 0], [0, 1, 0]);
 
 export const drawGridLine = (gl: WebGLRenderingContext) => {
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);

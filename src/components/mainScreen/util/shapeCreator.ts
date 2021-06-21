@@ -28,6 +28,12 @@ class ShapeCreator {
             return new Shape(this.shapes[shapeName]);
         }
     }
+    public createRandomShape() {
+        const shapeNames = Object.keys(this.shapes);
+
+        const randomShapeName = shapeNames[Math.round(Math.random() * shapeNames.length)];
+        return this.createShape(randomShapeName as ShapeName);
+    }
 }
 
 const creator = ShapeCreator.instance;

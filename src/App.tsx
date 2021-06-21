@@ -11,9 +11,9 @@ const Tetris = ():JSX.Element => {
 
     return (
         <div className="tetris">
-            <MainScreen/>
-            <About />
-            <RealtimeInfo />
+            <MainScreen gameStatus={status} />
+            {/* <About /> */}
+            {/* <RealtimeInfo /> */}
             <GameStatusPanel status={status} setStatus={setStatus} />
         </div>
     );

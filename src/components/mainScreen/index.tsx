@@ -84,7 +84,7 @@ const updateCellValueByCoord = (cellDatas: CellData, coordLd: {x: number, y: num
     return resultData;
 };
 
-const MainScreen:React.FC<MainScreenProps> = (props) => {
+const MainScreen: React.FC<MainScreenProps> = (props) => {
     const {gameStatus} = props;
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [cellDatas, setCellDatas] = useState<CellData>([]);
@@ -108,6 +108,58 @@ const MainScreen:React.FC<MainScreenProps> = (props) => {
         const b = Math.random();
         setActiveShapeColor([r, g, b]);
     };
+
+    // 添加键盘事件
+    useEffect(() => {
+        if (activeShape) {
+            const keyHandle = (event: KeyboardEvent) => {
+                switch (event.key) {
+                    case "ArrowDown":
+                        setActiveShapeCoord((coord) => ({x: coord.x, y: coord.y - 1}));
+                        break;
+                    case "ArrowLeft":
+                        setActiveShapeCoord((coord) => {
+                            const cellValue = getCellValueByCoord(cellDatas, {x: coord.x - 1, y: coord.y});
+                            if ((cellValue & activeShape.data) === 0) {
+                                return {
+                                    x: coord.x - 1,
+                                    y: coord.y
+                                };
+                            } else {
+                                return coord;
+                            }
+                        });
+                        break;
+                    case "ArrowRight":
+                        setActiveShapeCoord((coord) => {
+                            const cellValue = getCellValueByCoord(cellDatas, {x: coord.x + 1, y: coord.y});
+                            if ((cellValue & activeShape.data) === 0) {
+                                return {
+                                    x: coord.x + 1,
+                                    y: coord.y
+                                };
+                            } else {
+                                return coord;
+                            }
+                        });
+                        break;
+                    case "ArrowUp":
+                        const shapeData = activeShape.getAfterOneRotate_Data();
+                        const cellValue = getCellValueByCoord(cellDatas, activeShapeCoord);
+                        if ((cellValue & shapeData) === 0) {
+                            activeShape.rotate();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            };
+            window.addEventListener("keydown", keyHandle);
+            return () => {
+                window.removeEventListener("keydown", keyHandle);
+            }
+        }
+    }, [activeShape]);
 
     useEffect(() => {
         setRandomShape();

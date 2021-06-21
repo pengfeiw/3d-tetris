@@ -11,8 +11,17 @@ class Shape {
         this.shapeIndex++;
         this.shapeIndex %= 4;
     }
+    /**
+     * 获取当前data
+     */
     public get data() {
         return this.datas[this.shapeIndex];
+    }
+    /**
+     * 获取旋转一次后的data
+     */
+    public getAfterOneRotate_Data() {
+        return this.datas[(this.shapeIndex + 1) % 4];
     }
 }
 

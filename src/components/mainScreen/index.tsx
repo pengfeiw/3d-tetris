@@ -244,8 +244,48 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
                 gameRunData.activeShapePos = activeShapeCoord;
             }
         }
-
     }, [activeShapeCoord]);
+
+    useEffect(() => {
+        const eliminateRowIndex: number[] = [];
+        for (let i = 0; i < cellDatas.length; i++) {
+            const curRow = cellDatas[i];
+            const isEliminate = curRow.every((item) => item === 1);
+
+            if (isEliminate) {
+                eliminateRowIndex.push(i);
+            }
+        }
+
+        if (eliminateRowIndex.length > 0) {
+            let isDraw = false;
+            const intervalId = setInterval(() => {
+                if (isDraw) {
+                    const data: CellData = JSON.parse(JSON.stringify(cellDatas));
+                    for (let i = 0; i < eliminateRowIndex.length; i++) {
+                        const rowIndex = eliminateRowIndex[i];
+                        data[rowIndex] = Array(WIDTH).fill(isDraw ? 1 : 0);
+                    }
+                    setCellDatas(data);
+                    isDraw = !isDraw;
+                }
+            }, 200);
+
+            setTimeout(() => {
+                clearInterval(intervalId);
+                const data: CellData = JSON.parse(JSON.stringify(cellDatas));
+                for (let i = eliminateRowIndex.length - 1; i >= 0; i--) {
+                    const delRowIndex = eliminateRowIndex[i];
+                    data.splice(delRowIndex, 1);
+                }
+                for (let i = 0; i < eliminateRowIndex.length; i++) {
+                    data.push(Array(WIDTH).fill(0));
+                }
+                setCellDatas(data);
+            }, 1000)
+        }
+
+    }, [cellDatas]);
 
     return (
         <>

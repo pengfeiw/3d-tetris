@@ -16,7 +16,7 @@ const getGridVertexs = (): number[] => {
     const miny = bottom * 10, maxy = top * 10;
     for (let i = left; i <= right; i++) {
         data.push(i * 10, maxy, 0);
-        data.push(i * 10, miny, 0);    
+        data.push(i * 10, miny, 0);
     }
 
     // rows
@@ -77,6 +77,52 @@ export const cubeVertexs = [
     5, 5, 0,
     -5, 5, 0,
     -5, 5, 10
+];
+
+// cube的法向量
+export const cubeNormals = [
+    // near
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    // far
+    0, 0, -1,
+    0, 0, -1,
+    0, 0, -1,
+    0, 0, -1,
+    0, 0, -1,
+    0, 0, -1,
+    // left
+    -1, 0, 0,
+    -1, 0, 0,
+    -1, 0, 0,
+    -1, 0, 0,
+    -1, 0, 0,
+    -1, 0, 0,
+    // right
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    // bottom
+    0, -1, 0,
+    0, -1, 0,
+    0, -1, 0,
+    0, -1, 0,
+    0, -1, 0,
+    0, -1, 0,
+    // top
+    0, 1, 0,
+    0, 1, 0,
+    0, 1, 0,
+    0, 1, 0,
+    0, 1, 0,
+    0, 1, 0
 ];
 
 export const randomCubeColor = () => {

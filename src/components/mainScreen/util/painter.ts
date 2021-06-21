@@ -145,8 +145,8 @@ export const draw = (gl: WebGLRenderingContext) => {
             for (let j = pos.x; j < pos.x + 4; j++) {
                 if (i >= 0 && j >= 0) {
                     cellData[i][j] = (shapeData & 0x8000) === 0 ? 0 : 1; 
-                    shapeData <<= 1;
                 }
+                shapeData <<= 1;
             }
         }
         

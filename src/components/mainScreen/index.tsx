@@ -119,6 +119,7 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
                         break;
                     case "ArrowLeft":
                         setActiveShapeCoord((coord) => {
+                            if (coord.y >= HEIGHT) return coord;
                             const cellValue = getCellValueByCoord(cellDatas, {x: coord.x - 1, y: coord.y});
                             if ((cellValue & activeShape.data) === 0) {
                                 return {
@@ -132,6 +133,7 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
                         break;
                     case "ArrowRight":
                         setActiveShapeCoord((coord) => {
+                            if (coord.y >= HEIGHT) return coord;
                             const cellValue = getCellValueByCoord(cellDatas, {x: coord.x + 1, y: coord.y});
                             if ((cellValue & activeShape.data) === 0) {
                                 return {
@@ -176,7 +178,6 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
             clearInterval(intervalId);
         }
     }, [speed, gameStatus]);
-
 
     useEffect(() => {
         if (gameStatus === GameStatus.UNSTART) {

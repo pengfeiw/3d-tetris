@@ -31,7 +31,7 @@ class ShapeCreator {
     public createRandomShape() {
         const shapeNames = Object.keys(this.shapes);
 
-        const randomShapeName = shapeNames[Math.round(Math.random() * shapeNames.length)];
+        const randomShapeName = shapeNames[Math.floor(Math.random() * shapeNames.length)];
         return this.createShape(randomShapeName as ShapeName);
     }
 }

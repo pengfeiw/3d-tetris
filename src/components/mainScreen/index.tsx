@@ -7,6 +7,7 @@ import Shape from "./util/shape";
 import {GameStatus} from "../../tetris.interface";
 import {vec3} from "gl-matrix";
 import "./index.less";
+import RealtimeInfo from "../realtimeInfo";
 
 type CellData = (0 | 1)[][];
 interface MainScreenProps {
@@ -312,7 +313,7 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
                     data.push(Array(WIDTH).fill(0));
                 }
 
-                setScore(score => score += (eliminateRowIndex.length * 10))
+                // setScore(score => score += (eliminateRowIndex.length * 10))
                 setCellDatas(data);
             }, 1000)
         }
@@ -332,6 +333,13 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
     return (
         <>
             <canvas className="gameCanvas" ref={canvasRef} />
+            <RealtimeInfo
+                status={gameStatus}
+                setStatus={setGameStatus}
+                nextShape={nextShape}
+                score={score}
+                nextShapeColor={nextShapeColor}
+            />
         </>
     );
 };

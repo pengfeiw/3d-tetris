@@ -1,8 +1,56 @@
 .realtimeInfo {
-    width: 200px;
-    position: absolute;
-    right: 30px;
-    bottom: 50px;
-    top: 50px;
-    z-index: 1;
+    width         : 300px;
+    height        : 100%;
+    min-width     : 300px;
+    display       : inline-block;
+    position      : absolute;
+    top           : 0;
+    right         : 0;
+    display       : flex;
+    flex-direction: column;
+    align-items   : center;
+    padding-top   : 20px;
+
+    .preview-canvas {
+        width : 200px;
+        height: 200px;
+        margin: 0 auto;
+    }
+
+    .info {
+        width     : 260px;
+        margin-top: 20px;
+
+        .info-item {
+            font-size  : 30px;
+            font-weight: lighter;
+
+            .value {
+                color      : darkseagreen;
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .buttons {
+        width     : 260px;
+        margin-top: 100px;
+
+        .button {
+            width: 100px;
+        }
+        .button:first-child {
+            margin-right: 20px;
+        }
+
+        .operate-button {
+            .top {
+                margin-bottom: 20px;
+            }
+            margin-top: 30px;
+            .button {
+                background-color: #6495ed;
+            }
+        }
+    }
 }

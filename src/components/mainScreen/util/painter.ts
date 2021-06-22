@@ -1,13 +1,52 @@
-import {mat4, vec3} from "gl-matrix";
+import {glMatrix, mat4, vec3} from "gl-matrix";
 import {gridVertexs, cubeVertexs, randomCubeColor, cubeNormals} from "../../../data/shaderData";
 import {grid_vertex_source, cube_vertex_source, grid_fragment_source, cube_fragment_source} from "../../../data/glsl_source";
 import Shader from "../../../gl/shader";
 import {columnCount, rowCount} from "../../../data/shaderData";
 import Shape from "./shape";
 
-const view = mat4.lookAt(mat4.create(), [0, -200, 200], [0, 0, 0], [0, 1, 0]);
+interface GameRunData {
+    cellDatas: (0 | 1)[][]; // 当前所有格子数据
+    activeShape: Shape | null; // 活动的shape
+    activeShapePos: {x: number; y: number}, // 活动的shape的左下角坐标
+    lightColor: vec3; // 光照颜色
+    lightDirection: vec3; // 光照方向
+    settledCubeColor: vec3; // 已定的cube颜色
+    activeCubeColor: vec3; // 活动的cube颜色
+}
 
-export const drawGridLine = (gl: WebGLRenderingContext) => {
+interface GameSetting {
+    distance: number;
+    rotateX: number;
+}
+
+export const gameRunData: GameRunData = {
+    cellDatas: [],
+    activeShape: null,
+    activeShapePos: {
+        x: 0, y: 0
+    },
+    lightColor: [1, 1, 1],
+    lightDirection: [0, 0.8, -2],
+    settledCubeColor: [0.36, 0.42, 0.60],
+    activeCubeColor: [1, 1, 1]
+};
+export const gameSettings: GameSetting = {
+    distance: 200,
+    rotateX: 40
+};
+
+const viewMatrix = () => {
+    const view = mat4.lookAt(mat4.create(), [0, 0, gameSettings.distance + 100], [0, 0, 0], [0, 1, 0]);
+    return view;
+};
+
+const modelRotateMatrix = () => {
+    const model = mat4.rotate(mat4.create(), mat4.create(), glMatrix.toRadian(gameSettings.rotateX), [-1, 0, 0]);
+    return model;
+};
+
+const drawGridLine = (gl: WebGLRenderingContext) => {
     const shader = new Shader(gl, grid_vertex_source, grid_fragment_source);
     shader.useProgram();
 
@@ -23,11 +62,10 @@ export const drawGridLine = (gl: WebGLRenderingContext) => {
     shader.setFloat3("u_color", 1, 1, 1);
 
     // set matrix
-    const model = mat4.create();
     const projection = mat4.perspective(mat4.create(), Math.PI * 0.25, gl.canvas.width / gl.canvas.height, 0.1, 1000);
-    shader.setMat4("u_model", new Float32Array(model));
+    shader.setMat4("u_model", new Float32Array(modelRotateMatrix()));
     shader.setMat4("u_projection", new Float32Array(projection));
-    shader.setMat4("u_view", new Float32Array(view));
+    shader.setMat4("u_view", new Float32Array(viewMatrix()));
 
     gl.drawArrays(gl.LINES, 0, gridVertexs.length / 3);
 };
@@ -39,7 +77,7 @@ export const drawGridLine = (gl: WebGLRenderingContext) => {
  * @param lightColor the color of light.
  * @param lightDirection the direction of light.
  */
-export const drawCube = (gl: WebGLRenderingContext, cellDatas: (0 | 1)[][], lightColor: vec3, lightDirection: vec3, cubeColor?: vec3) => {
+const drawCube = (gl: WebGLRenderingContext, cellDatas: (0 | 1)[][], lightColor: vec3, lightDirection: vec3, cubeColor?: vec3) => {
     const shader = new Shader(gl, cube_vertex_source, cube_fragment_source);
     shader.useProgram();
 
@@ -60,7 +98,7 @@ export const drawCube = (gl: WebGLRenderingContext, cellDatas: (0 | 1)[][], ligh
     gl.enableVertexAttribArray(normalLocation);
 
     const projection = mat4.perspective(mat4.create(), Math.PI * 0.25, gl.canvas.width / gl.canvas.height, 0.1, 1000);
-    shader.setMat4("u_view", new Float32Array(view));
+    shader.setMat4("u_view", new Float32Array(viewMatrix()));
     shader.setMat4("u_projection", new Float32Array(projection));
     shader.setFloat3("u_lightColor", lightColor[0], lightColor[1], lightColor[2]);
     shader.setFloat3("u_lightDirectionReverse", -lightDirection[0], -lightDirection[1], -lightDirection[2]);
@@ -87,35 +125,13 @@ export const drawCube = (gl: WebGLRenderingContext, cellDatas: (0 | 1)[][], ligh
                 gl.enableVertexAttribArray(colorLocation);
 
                 // set matrix
-                const model = mat4.translate(mat4.create(), mat4.create(), [10 * (col - (columnCount / 2 - 0.5)), 10 * (row - (rowCount / 2 - 0.5)), 0]);
+                const model = mat4.translate(mat4.create(), modelRotateMatrix(), [10 * (col - (columnCount / 2 - 0.5)), 10 * (row - (rowCount / 2 - 0.5)), 0]);
                 shader.setMat4("u_model", new Float32Array(model));
 
                 gl.drawArrays(gl.TRIANGLES, 0, 36);
             }
         }
     }
-};
-
-interface GameRunData {
-    cellDatas: (0 | 1)[][]; // 当前所有格子数据
-    activeShape: Shape | null; // 活动的shape
-    activeShapePos: {x: number; y: number}, // 活动的shape的左下角坐标
-    lightColor: vec3; // 光照颜色
-    lightDirection: vec3; // 光照方向
-    settledCubeColor: vec3; // 已定的cube颜色
-    activeCubeColor: vec3; // 活动的cube颜色
-}
-
-export const gameRunData: GameRunData = {
-    cellDatas: [],
-    activeShape: null,
-    activeShapePos: {
-        x: 0, y: 0
-    },
-    lightColor: [1, 1, 1],
-    lightDirection: [0, 0.3, -1],
-    settledCubeColor: [0.36, 0.42, 0.60],
-    activeCubeColor: [1, 1, 1]
 };
 
 export const draw = (gl: WebGLRenderingContext) => {

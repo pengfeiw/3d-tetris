@@ -1,0 +1,47 @@
+.setting-icon {
+    position: absolute;
+    left    : 5px;
+    top     : 5px;
+    cursor  : pointer;
+    color   : white;
+}
+
+.setting-content,
+.MuiPaper-root {
+    width: 250px;
+}
+
+.MuiBackdrop-root {
+    background-color: transparent !important
+}
+
+.MuiPaper-root {
+    padding: 20px 15px;
+    .setting-item {
+        margin-top: 10px;
+        .setting-title {
+            color: #313235;
+            margin-bottom: 2px;
+        }
+        .setting-operator {
+            display        : flex;
+            justify-content: space-between;
+
+            .setting-slider {
+                flex-grow: 1;
+            }
+
+            .setting-label {
+                display: inline-block;
+                color: rgb(63, 60, 60);
+                &:first-child {
+                    padding-right: 8px;
+                }
+
+                &:last-child {
+                    padding-left: 8px;
+                }
+            }
+        }
+    }
+}

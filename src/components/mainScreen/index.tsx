@@ -327,10 +327,10 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
 
     // 根据分数设置速度
     useEffect(() => {
-        if (score <= 200) {
+        if (score <= 100) {
             setSpeed(1);
         } else {
-            const speed = Math.ceil(score / 200);
+            const speed = Math.ceil(score / 100);
             setSpeed(Math.min(speed, 11)); // 最大速度限制在11
         }
     }, [score]);

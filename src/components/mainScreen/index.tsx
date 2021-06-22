@@ -44,7 +44,7 @@ const getCellValueByCoord = (cellDatas: CellData, coordLd: {x: number, y: number
             binaryString += "1111";
         } else if (i >= cellDatas.length) {
             for (let j = coordLd.x; j < coordLd.x + 4; j++) {
-                if (j < 0 && j >= columnCount) {
+                if (j < 0 || j >= columnCount) {
                     binaryString += "1";
                 } else {
                     binaryString += "0";

@@ -1,7 +1,7 @@
 import React, {useRef, useState} from "react";
 import {useEffect} from "react";
 import {draw, gameRunData} from "./util/painter";
-import {columnCount as WIDTH, rowCount as HEIGHT} from "../../data/shaderData";
+import {columnCount, columnCount as WIDTH, rowCount as HEIGHT} from "../../data/shaderData";
 import ShapeCreator from "./util/shapeCreator";
 import Shape from "./util/shape";
 import {GameStatus} from "../../tetris.interface";
@@ -40,11 +40,17 @@ const getCellValueByCoord = (cellDatas: CellData, coordLd: {x: number, y: number
         if (i < 0) {
             binaryString += "1111";
         } else if (i >= cellDatas.length) {
-            binaryString += "0000";
+            for (let j = coordLd.x; j < coordLd.x + 4; j++) {
+                if (j < 0 && j >= columnCount) {
+                    binaryString += "1";
+                } else {
+                    binaryString += "0";
+                }
+            }
         } else {
             for (let j = coordLd.x; j < coordLd.x + 4; j++) {
                 if (j >= 0 && j < cellDatas[i].length) {
-                    binaryString += cellDatas[i][j]
+                    binaryString += cellDatas[i][j];
                 } else {
                     binaryString += "1";
                 }
@@ -161,7 +167,7 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
                 window.removeEventListener("keydown", keyHandle);
             }
         }
-    }, [activeShape]);
+    }, [activeShape, activeShapeCoord]);
 
     useEffect(() => {
         setRandomShape();

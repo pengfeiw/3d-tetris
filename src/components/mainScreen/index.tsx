@@ -169,10 +169,12 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
         }
     }, [activeShape, activeShapeCoord]);
 
+    // 初始时，设置随机block
     useEffect(() => {
         setRandomShape();
     }, []);
 
+    // block自动下落，下落速度由speed控制
     useEffect(() => {
         const intervalId = setInterval(() => {
             if (gameStatus === GameStatus.RUNNING) {
@@ -185,12 +187,14 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
         }
     }, [speed, gameStatus]);
 
+    // 初始化cellDatas
     useEffect(() => {
         if (gameStatus === GameStatus.UNSTART) {
             setCellDatas(getInitData())
         }
     }, [gameStatus]);
 
+    // 监听窗口resize事件，改变canvas尺寸
     useEffect(() => {
         const canvas = canvasRef.current;
         if (canvas) {
@@ -211,28 +215,33 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
         }
     }, [canvasRef]);
 
+    // 使用webgl绘制
     useEffect(() => {
         const canvas = canvasRef.current;
-        if (canvas) {
+        if (canvas && (gameStatus === GameStatus.RUNNING || gameStatus === GameStatus.UNSTART)) {
             const gl = canvas.getContext("webgl") as WebGLRenderingContext;
             draw(gl);
         }
-    }, [canvasRef]);
+    }, [canvasRef, GameStatus]);
 
+    // 改变webgl绘制所需的数据：cellDatas
     useEffect(() => {
         gameRunData.cellDatas = cellDatas;
     }, [cellDatas]);
 
+    // 改变webgl绘制所需的数据：活动的block类型
     useEffect(() => {
         if (activeShape) {
             gameRunData.activeShape = activeShape;
         }
     }, [activeShape]);
 
+    // 改变webgl绘制所需的数据：活动的block的颜色
     useEffect(() => {
         gameRunData.activeCubeColor = activeShapeColor;
     }, [activeShapeColor]);
 
+    // 检测碰撞，更新cellDatas
     useEffect(() => {
         // 检测碰撞
         if (activeShape) {
@@ -252,6 +261,7 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
         }
     }, [activeShapeCoord]);
 
+    // 消除满行，并加分
     useEffect(() => {
         const eliminateRowIndex: number[] = [];
         for (let i = 0; i < cellDatas.length; i++) {

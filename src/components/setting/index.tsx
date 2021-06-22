@@ -1,5 +1,4 @@
 import React, {FC, useState} from "react";
-import {Card} from "@material-ui/core";
 import Slider from "@material-ui/core/Slider";
 import Drawer from "@material-ui/core/Drawer";
 import SettingsIcon from "@material-ui/icons/Settings";

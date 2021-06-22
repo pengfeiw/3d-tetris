@@ -28,7 +28,7 @@ export const gameRunData: GameRunData = {
     },
     lightColor: [1, 1, 1],
     lightDirection: [0, 0.8, -2],
-    settledCubeColor: [0.36, 0.42, 0.60],
+    settledCubeColor: [0.92, 0.15, 0.02], // [0.36, 0.42, 0.60],
     activeCubeColor: [1, 1, 1]
 };
 export const gameSettings: GameSetting = {

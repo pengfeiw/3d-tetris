@@ -37,6 +37,12 @@ const Tetris = ():JSX.Element => {
         }
     }, []);
 
+    useEffect(() => {
+        if (status === GameStatus.RUNNING) {
+            setSettingOpen(false);
+        }
+    }, [status]);
+
     const handleSettingOpen = (open: boolean) => {
         setSettingOpen(open);
         if (open && status === GameStatus.RUNNING) {
@@ -46,10 +52,13 @@ const Tetris = ():JSX.Element => {
 
     return (
         <div className="tetris">
-            <MainScreen gameStatus={status} />
+            <MainScreen gameStatus={status} setGameStatus={setStatus} score={score} setScore={setScore} />
             <Setting open={settingOpen} setOpen={handleSettingOpen} />
             {/* <RealtimeInfo /> */}
-            <GameStatusPanel status={status} setStatus={setStatus} />
+            {
+                settingOpen ? <></> :
+                <GameStatusPanel status={status} setStatus={setStatus} />
+            }
         </div>
     );
 };

@@ -11,6 +11,9 @@ import "./index.less";
 type CellData = (0 | 1)[][];
 interface MainScreenProps {
     gameStatus: GameStatus;
+    setGameStatus: React.Dispatch<React.SetStateAction<GameStatus>>;
+    score: number;
+    setScore: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const getInitData = () => {
@@ -91,13 +94,14 @@ const updateCellValueByCoord = (cellDatas: CellData, coordLd: {x: number, y: num
 };
 
 const MainScreen: React.FC<MainScreenProps> = (props) => {
-    const {gameStatus} = props;
+    const {gameStatus, setGameStatus, score, setScore} = props;
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [cellDatas, setCellDatas] = useState<CellData>([]);
     const [activeShape, setActiveShape] = useState<Shape>();
     const [activeShapeCoord, setActiveShapeCoord] = useState<{x: number, y: number}>({x: 0, y: 0}); // 当前活动的shape左下角坐标
     const [activeShapeColor, setActiveShapeColor] = useState<vec3>([1, 1, 1]);
-    const [speed, setSpeed] = useState<number>(5);
+    const [speed, setSpeed] = useState<number>(1);
+    const preStatusRef = useRef<GameStatus>(gameStatus); // 前一个状态
 
     /**
      * 设置随机block
@@ -189,11 +193,12 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
 
     // 初始化cellDatas
     useEffect(() => {
-        if (gameStatus === GameStatus.UNSTART) {
+        if ((preStatusRef.current === GameStatus.OVER || preStatusRef.current === GameStatus.UNSTART) && gameStatus === GameStatus.RUNNING) {
             setCellDatas(getInitData())
         }
+        preStatusRef.current = gameStatus;
     }, [gameStatus]);
-
+ 
     // 监听窗口resize事件，改变canvas尺寸
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -247,8 +252,12 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
         if (activeShape) {
             const areaValue = getCellValueByCoord(cellDatas, activeShapeCoord);
             const crash = activeShape.data & areaValue; // 是否存在碰撞
-            console.log(crash);
             if (crash) {
+                if (activeShapeCoord.y > HEIGHT - 4) {
+                    setGameStatus(GameStatus.OVER);
+                    return;
+                }
+
                 setRandomShape();
                 // 更新cellDatas
                 const shapeData = gameRunData.activeShape?.data as number;
@@ -276,15 +285,13 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
         if (eliminateRowIndex.length > 0) {
             let isDraw = false;
             const intervalId = setInterval(() => {
-                if (isDraw) {
-                    const data: CellData = JSON.parse(JSON.stringify(cellDatas));
-                    for (let i = 0; i < eliminateRowIndex.length; i++) {
-                        const rowIndex = eliminateRowIndex[i];
-                        data[rowIndex] = Array(WIDTH).fill(isDraw ? 1 : 0);
-                    }
-                    setCellDatas(data);
-                    isDraw = !isDraw;
+                const data: CellData = JSON.parse(JSON.stringify(cellDatas));
+                for (let i = 0; i < eliminateRowIndex.length; i++) {
+                    const rowIndex = eliminateRowIndex[i];
+                    data[rowIndex] = Array(WIDTH).fill(isDraw ? 1 : 0);
                 }
+                setCellDatas(data);
+                isDraw = !isDraw;
             }, 200);
 
             setTimeout(() => {
@@ -297,11 +304,23 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
                 for (let i = 0; i < eliminateRowIndex.length; i++) {
                     data.push(Array(WIDTH).fill(0));
                 }
+
+                setScore(score => score += (eliminateRowIndex.length * 10))
                 setCellDatas(data);
             }, 1000)
         }
 
     }, [cellDatas]);
+
+    // 根据分数设置速度
+    useEffect(() => {
+        if (score <= 200) {
+            setSpeed(1);
+        } else {
+            const speed = Math.ceil(score / 200);
+            setSpeed(Math.min(speed, 11)); // 最大速度限制在11
+        }
+    }, [score]);
 
     return (
         <>

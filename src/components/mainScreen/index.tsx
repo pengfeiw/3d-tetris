@@ -100,23 +100,28 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
     const [activeShape, setActiveShape] = useState<Shape>();
     const [activeShapeCoord, setActiveShapeCoord] = useState<{x: number, y: number}>({x: 0, y: 0}); // 当前活动的shape左下角坐标
     const [activeShapeColor, setActiveShapeColor] = useState<vec3>([1, 1, 1]);
+
+    const [nextShape, setNextShape] = useState<Shape | undefined>(ShapeCreator.createRandomShape() as Shape);
+    const [nextShapeColor, setNextShapeColor] = useState<vec3>([Math.random(), Math.random(), Math.random()]);
+
     const [speed, setSpeed] = useState<number>(1);
     const preStatusRef = useRef<GameStatus>(gameStatus); // 前一个状态
 
     /**
      * 设置随机block
      */
-    const setRandomShape = () => {
+    const setNextRandomShape = () => {
         const shape = ShapeCreator.createRandomShape();
-        setActiveShape(shape);
-
-        const coordX = Math.round(Math.random() * (WIDTH - 4));
-        setActiveShapeCoord({x: coordX, y: HEIGHT});
-
+        setNextShape(shape as Shape);
         const r = Math.random();
         const g = Math.random();
         const b = Math.random();
-        setActiveShapeColor([r, g, b]);
+        setNextShapeColor([r, g, b]);
+        const coordX = Math.round(Math.random() * (WIDTH - 4));
+        setActiveShapeCoord({x: coordX, y: HEIGHT});
+
+        setActiveShape(nextShape);
+        setActiveShapeColor(nextShapeColor);
     };
 
     // 添加键盘事件
@@ -175,7 +180,8 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
 
     // 初始时，设置随机block
     useEffect(() => {
-        setRandomShape();
+        // setRandomShape();
+        setNextRandomShape();
     }, []);
 
     // block自动下落，下落速度由speed控制
@@ -194,7 +200,7 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
     // 初始化cellDatas
     useEffect(() => {
         if ((preStatusRef.current === GameStatus.OVER || preStatusRef.current === GameStatus.UNSTART) && gameStatus === GameStatus.RUNNING) {
-            setCellDatas(getInitData())
+            setCellDatas(getInitData());
         }
         preStatusRef.current = gameStatus;
     }, [gameStatus]);
@@ -258,7 +264,8 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
                     return;
                 }
 
-                setRandomShape();
+                // setRandomShape();
+                setNextRandomShape();
                 // 更新cellDatas
                 const shapeData = gameRunData.activeShape?.data as number;
                 const shapePos = gameRunData.activeShapePos;

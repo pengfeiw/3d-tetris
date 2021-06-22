@@ -1,14 +1,12 @@
 import React, {useState, useEffect} from "react";
 import MainScreen from "./components/mainScreen";
 import Setting from "./components/setting";
-import RealtimeInfo from "./components/realtimeInfo";
 import GameStatusPanel from "./components/gameStatus";
 import {GameStatus} from "./tetris.interface";
 import "./app.less";
 
 const Tetris = ():JSX.Element => {
     const [status, setStatus] = useState<GameStatus>(GameStatus.UNSTART);
-    const [time, setTime] = useState<number>(0); // 时间
     const [score, setScore] = useState<number>(0); // 分数
     const [settingOpen, setSettingOpen] = useState<boolean>(true);
 
@@ -54,7 +52,6 @@ const Tetris = ():JSX.Element => {
         <div className="tetris">
             <MainScreen gameStatus={status} setGameStatus={setStatus} score={score} setScore={setScore} />
             <Setting open={settingOpen} setOpen={handleSettingOpen} />
-            {/* <RealtimeInfo /> */}
             {
                 settingOpen ? <></> :
                 <GameStatusPanel status={status} setStatus={setStatus} />

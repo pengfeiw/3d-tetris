@@ -8,7 +8,7 @@ import "./app.less";
 const Tetris = ():JSX.Element => {
     const [status, setStatus] = useState<GameStatus>(GameStatus.UNSTART);
     const [score, setScore] = useState<number>(0); // 分数
-    const [settingOpen, setSettingOpen] = useState<boolean>(true);
+    const [settingOpen, setSettingOpen] = useState<boolean>(false);
 
     // 监听暂停或者开始事件
     useEffect(() => {

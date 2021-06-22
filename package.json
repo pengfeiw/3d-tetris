@@ -1,5 +1,10 @@
 {
-    "name": "person-site",
+    "name": "3d-tetris",
+    "keywords": ["webgl", "tetris", "3d", "javascript"],
+    "author": {
+        "name": "Wang Pengfei",
+        "url": "http://www.pengfeixc.com"
+    },
     "version": "0.1.0",
     "private": true,
     "dependencies": {

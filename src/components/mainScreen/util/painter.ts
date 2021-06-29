@@ -66,7 +66,7 @@ const drawGridLine = (gl: WebGLRenderingContext) => {
     shader.setMat4("u_model", new Float32Array(modelRotateMatrix()));
     shader.setMat4("u_projection", new Float32Array(projection));
     shader.setMat4("u_view", new Float32Array(viewMatrix()));
-
+    
     gl.drawArrays(gl.LINES, 0, gridVertexs.length / 3);
 };
 
@@ -137,13 +137,16 @@ const drawCube = (gl: WebGLRenderingContext, cellDatas: (0 | 1)[][], lightColor:
 export const draw = (gl: WebGLRenderingContext) => {
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+    gl.cullFace(gl.BACK);
     gl.clearColor(0.19, 0.22, 0.25, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+    
     // draw grid line
     drawGridLine(gl);
     // draw settled cube
     drawCube(gl, gameRunData.cellDatas, gameRunData.lightColor, gameRunData.lightDirection, gameRunData.settledCubeColor);
+
     // draw active cube
     if (gameRunData.activeShape) {
         const cellData:(0 | 1)[][] = [];

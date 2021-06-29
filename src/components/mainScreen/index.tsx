@@ -233,7 +233,7 @@ const MainScreen: React.FC<MainScreenProps> = (props) => {
     useEffect(() => {
         const canvas = canvasRef.current;
         if (canvas && (gameStatus === GameStatus.RUNNING || gameStatus === GameStatus.UNSTART)) {
-            const gl = canvas.getContext("webgl") as WebGLRenderingContext;
+            const gl = canvas.getContext("webgl2") as WebGL2RenderingContext;
             draw(gl);
         }
     }, [canvasRef, GameStatus]);

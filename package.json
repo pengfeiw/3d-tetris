@@ -1,6 +1,11 @@
 {
     "name": "3d-tetris",
-    "keywords": ["webgl", "tetris", "3d", "javascript"],
+    "keywords": [
+        "webgl",
+        "tetris",
+        "3d",
+        "javascript"
+    ],
     "author": {
         "name": "Wang Pengfei",
         "url": "http://www.pengfeixc.com"
@@ -8,15 +13,6 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@material-ui/core": "^4.11.4",
-        "@material-ui/icons": "^4.11.2",
-        "@testing-library/jest-dom": "^5.11.4",
-        "@testing-library/react": "^11.1.0",
-        "@testing-library/user-event": "^12.1.10",
-        "@types/jest": "^26.0.15",
-        "@types/node": "^12.0.0",
-        "@types/react": "^16.9.53",
-        "@types/react-dom": "^16.9.8",
         "customize-cra": "^1.0.0",
         "gl-matrix": "^3.3.0",
         "less": "^3.12.2",
@@ -25,8 +21,9 @@
         "react-app-rewired": "^2.1.6",
         "react-dom": "^17.0.1",
         "react-scripts": "4.0.0",
-        "typescript": "^4.0.3",
-        "web-vitals": "^0.2.4"
+        "web-vitals": "^0.2.4",
+        "@material-ui/core": "^4.11.4",
+        "@material-ui/icons": "^4.11.2"
     },
     "scripts": {
         "start": "react-app-rewired start",
@@ -71,6 +68,14 @@
         ]
     },
     "devDependencies": {
+        "typescript": "~4.0.5",
+        "@testing-library/jest-dom": "^5.11.4",
+        "@testing-library/react": "^11.1.0",
+        "@testing-library/user-event": "^12.1.10",
+        "@types/jest": "^26.0.15",
+        "@types/node": "^12.0.0",
+        "@types/react": "^16.9.53",
+        "@types/react-dom": "^16.9.8",
         "@commitlint/cli": "^11.0.0",
         "@commitlint/config-conventional": "^11.0.0",
         "@typescript-eslint/eslint-plugin": "^4.6.0",

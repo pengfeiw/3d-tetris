@@ -10,7 +10,6 @@
     "homepage": "https://pengfeiw.github.io/minicode/3d-tetris",
     "bugs": "https://github.com/pengfeiw/3d-tetris/issues",
     "description": "3D tetris game written with webgl",
-    "keywords": ["webgl", "tetris", "3d", "game"],
     "version": "0.1.0",
     "private": true,
     "dependencies": {
